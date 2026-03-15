@@ -79,7 +79,6 @@ export function usePageSetup() {
     };
 }
 
-// Warna dan menu — konstanta shared
 export const COLORS = {
     primary: '#3A7AC3',
     secondary: '#38C0A8',

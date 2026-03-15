@@ -116,7 +116,6 @@ export default function CreateEntryPage() {
         setShowTranslate(false); setTranslatePreview({});
     };
 
-    // shared input styles
     const inputStyle = { backgroundColor: darkMode ? '#3F3F52' : '#F8FAFC', borderColor: darkMode ? '#4A4A62' : '#E2E8F0', color: darkMode ? '#E0E0E0' : '#1E293B' };
     const inputCls = 'w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none';
     const focusOn = (e: any) => { e.currentTarget.style.borderColor = COLORS.primary; };
@@ -200,7 +199,6 @@ export default function CreateEntryPage() {
 
             <div className="flex-1 flex flex-col overflow-hidden">
 
-                {/* ── top bar ── */}
                 <div className="sticky top-0 z-40 border-b shrink-0"
                     style={{ backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF', borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>
                     <div className="px-8 py-4 flex justify-between items-center">
@@ -279,7 +277,7 @@ export default function CreateEntryPage() {
                     </div>
                 </div>
 
-                {/* ── content ── */}
+                {/* content */}
                 <div className="flex-1 overflow-y-auto p-6">
                     <div className="max-w-3xl mx-auto space-y-4">
 
@@ -361,7 +359,7 @@ export default function CreateEntryPage() {
                 </div>
             </div>
 
-            {/* ── Translate Modal ── */}
+            {/* Translate */}
             {showTranslate && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="rounded-2xl w-full max-w-md mx-4 shadow-2xl border overflow-hidden"

@@ -13,7 +13,6 @@ import MainSidebar from '@/app/components/MainSidebar';
 import ProjectSidebar from '@/app/components/ProjectSidebar';
 import { usePageSetup, COLORS } from '../../../../../../hooks/usagePageSetup';
 
-/* ── types ── */
 interface Field {
     id: string; name: string; apiId: string; type: string;
     required: boolean; unique: boolean; validations?: any; options?: any; order?: number;
@@ -103,7 +102,6 @@ export default function SinglePageBuilderPage() {
         }
     }, [selectedField]);
 
-    /* ── field actions ── */
     const handleAddField = async (type: string, subtype?: string) => {
         try {
             const token = getToken()!;
@@ -131,7 +129,6 @@ export default function SinglePageBuilderPage() {
         } catch (e) { console.error(e); }
     };
 
-    /* ── delete page ── */
     const handleDeletePage = async () => {
         try {
             setDeleting(true);
@@ -144,7 +141,6 @@ export default function SinglePageBuilderPage() {
         }
     };
 
-    /* ── drag reorder ── */
     const handleDragStart = (i: number) => { dragIndex.current = i; };
     const handleDragOver = (e: React.DragEvent, i: number) => {
         e.preventDefault();
@@ -180,7 +176,6 @@ export default function SinglePageBuilderPage() {
 
             <div className="flex-1 flex flex-col overflow-hidden">
 
-                {/* top bar */}
                 <div className="sticky top-0 z-40 border-b shrink-0"
                     style={{ backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF', borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>
                     <div className="px-8 py-4 flex justify-between items-center">
@@ -201,7 +196,7 @@ export default function SinglePageBuilderPage() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                            {/* ··· page menu */}
+                            {/* page menu */}
                             <div className="relative">
                                 <button onClick={() => setShowPageMenu(!showPageMenu)}
                                     className="w-9 h-9 flex items-center justify-center rounded-lg text-lg font-bold transition-all"
@@ -221,7 +216,7 @@ export default function SinglePageBuilderPage() {
                                             <span>📝</span> To Content Management
                                         </button>
                                         <div className="border-t my-1" style={{ borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }} />
-                                        {/* delete page — real action */}
+                                        {/* delete page */}
                                         <button
                                             onClick={() => { setShowPageMenu(false); setShowDeleteConfirm(true); }}
                                             className="w-full text-left px-4 py-2.5 text-sm flex items-center gap-2"
@@ -449,7 +444,7 @@ export default function SinglePageBuilderPage() {
                 </div>
             )}
 
-            {/* ── delete page confirm modal ── */}
+            {/* delete page confirm */}
             {showDeleteConfirm && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="rounded-2xl w-full max-w-md mx-4 p-6 shadow-2xl border"

@@ -37,7 +37,6 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
       if (stored) {
         const parsed: Project = JSON.parse(stored);
 
-        // basic sanity check
         if (parsed?.id && parsed?.name) {
           setActiveProjectState(parsed);
         } else {

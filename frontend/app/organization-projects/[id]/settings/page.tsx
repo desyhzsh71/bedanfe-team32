@@ -179,7 +179,6 @@ export default function OrganizationSettingsPage() {
             return;
         }
 
-        // Double confirmation
         const confirmText = prompt(`Please type "${organization.name}" to confirm deletion:`);
         if (confirmText !== organization.name) {
             alert('Organization name does not match. Deletion cancelled.');
@@ -337,7 +336,6 @@ export default function OrganizationSettingsPage() {
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col">
-                {/* Top Bar */}
                 <div className="sticky top-0 z-40 border-b transition-colors duration-300"
                     style={{
                         backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF',

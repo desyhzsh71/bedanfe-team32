@@ -42,7 +42,6 @@ export default function MultiplePageEntriesPage() {
     const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
     const [deleting, setDeleting] = useState(false);
 
-    /* translate */
     const [showTranslateModal, setShowTranslateModal] = useState(false);
     const [translateDir, setTranslateDir] = useState<'id-en' | 'en-id'>('id-en');
     const [translating, setTranslating] = useState(false);
@@ -96,7 +95,6 @@ export default function MultiplePageEntriesPage() {
         } catch (e) { console.error(e); }
     };
 
-    /* ── Translate handler ── */
     const openTranslate = (entryId: string) => {
         setTranslateEntryId(entryId);
         setTranslatePreview({});
@@ -376,7 +374,7 @@ export default function MultiplePageEntriesPage() {
                 </div>
             </div>
 
-            {/* ── Delete Confirm Modal ── */}
+            {/* Delete Confirm */}
             {deleteConfirm && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="rounded-2xl w-full max-w-md mx-4 p-6 shadow-2xl border"
@@ -406,7 +404,7 @@ export default function MultiplePageEntriesPage() {
                 </div>
             )}
 
-            {/* ── Translate Modal ── */}
+            {/* Translate */}
             {showTranslateModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="rounded-2xl w-full max-w-lg mx-4 shadow-2xl border overflow-hidden"
@@ -422,7 +420,6 @@ export default function MultiplePageEntriesPage() {
                         </div>
 
                         <div className="p-6 space-y-5">
-                            {/* Direction picker */}
                             <div>
                                 <label className="block text-sm font-medium mb-3" style={{ color: darkMode ? '#E0E0E0' : '#374151' }}>Translation Direction</label>
                                 <div className="flex gap-3">

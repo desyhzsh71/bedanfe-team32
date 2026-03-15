@@ -308,8 +308,6 @@ export default function ProjectDetailPage() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    // ─── HELPERS ──────────────────────────────────────────────────────────────
-
     const getStatusColor = (status: string) => {
         const statusLower = status?.toLowerCase() || 'active';
         switch (statusLower) {
@@ -326,8 +324,6 @@ export default function ProjectDetailPage() {
                 return 'bg-gray-100 text-gray-700';
         }
     };
-
-    // ─── LOADING ──────────────────────────────────────────────────────────────
 
     if (loading) {
         return (
@@ -353,8 +349,6 @@ export default function ProjectDetailPage() {
 
     const defaultDomain = `${project.name.toLowerCase().replace(/\s+/g, '-')}.cmsproject.com`;
 
-    // ─── RENDER ───────────────────────────────────────────────────────────────
-
     return (
         <div className="flex min-h-screen"
             style={{
@@ -362,7 +356,7 @@ export default function ProjectDetailPage() {
                 color: darkMode ? '#E0E0E0' : '#1E293B',
             }}>
 
-            {/* ── SIDEBAR ─────────────────────────────────────────────────── */}
+            {/* SIDEBAR */}
             <div
                 className="sticky top-0 h-screen overflow-y-auto transition-all duration-300"
                 style={{
@@ -460,10 +454,9 @@ export default function ProjectDetailPage() {
                 )}
             </div>
 
-            {/* ── MAIN CONTENT ─────────────────────────────────────────────── */}
+            {/* MAIN CONTENT */}
             <div className="flex-1 flex flex-col">
 
-                {/* ── TOP BAR ───────────────────────────────────────────── */}
                 <div className="sticky top-0 z-40 border-b transition-colors duration-300"
                     style={{
                         backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF',
@@ -588,10 +581,10 @@ export default function ProjectDetailPage() {
                     </div>
                 </div>
 
-                {/* ── PAGE CONTENT ──────────────────────────────────────── */}
+                {/* PAGE CONTENT */}
                 <div className="flex-1 p-8 overflow-y-auto">
 
-                    {/* Header Card */}
+                    {/* Header */}
                     <div className="rounded-xl p-8 mb-6 transition-all duration-300"
                         style={{
                             backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF',
@@ -899,7 +892,7 @@ export default function ProjectDetailPage() {
                 </div>
             </div>
 
-            {/* ── EDIT MODAL ────────────────────────────────────────────── */}
+            {/* EDIT MODAL */}
             {showEditModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <div className="rounded-xl shadow-2xl w-full max-w-md transition-all duration-300"
@@ -1010,7 +1003,7 @@ export default function ProjectDetailPage() {
                 </div>
             )}
 
-            {/* ── DUPLICATE MODAL ───────────────────────────────────────── */}
+            {/* DUPLICATE MODAL */}
             {showDuplicateModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <div className="rounded-xl shadow-2xl w-full max-w-md transition-all duration-300"
@@ -1070,7 +1063,7 @@ export default function ProjectDetailPage() {
                 </div>
             )}
 
-            {/* ── DUPLICATE TO PERSONAL MODAL ───────────────────────────── */}
+            {/* DUPLICATE TO PERSONAL MODAL */}
             {showDuplicateToPersonalModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <div className="rounded-xl shadow-2xl w-full max-w-md transition-all duration-300"

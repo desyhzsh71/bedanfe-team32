@@ -13,7 +13,6 @@ import MainSidebar from '@/app/components/MainSidebar';
 import ProjectSidebar from '@/app/components/ProjectSidebar';
 import { usePageSetup, COLORS } from '../../../../../../hooks/usagePageSetup';
 
-/* ── types ── */
 interface Field {
     id: string; name: string; apiId: string; type: string;
     required: boolean; unique: boolean; options?: any;
@@ -102,7 +101,6 @@ export default function ComponentBuilderPage() {
         }
     }, [selectedField]);
 
-    /* ── field actions ── */
     const handleAddField = async (type: string, subtype?: string) => {
         try {
             const token = getToken()!;
@@ -130,7 +128,6 @@ export default function ComponentBuilderPage() {
         } catch (e) { console.error(e); }
     };
 
-    /* ── delete component ── */
     const handleDeleteComponent = async () => {
         try {
             setDeleting(true);
@@ -143,7 +140,6 @@ export default function ComponentBuilderPage() {
         }
     };
 
-    /* ── drag reorder ── */
     const handleDragStart = (i: number) => { dragIndex.current = i; };
     const handleDragOver = (e: React.DragEvent, i: number) => {
         e.preventDefault();
@@ -199,7 +195,7 @@ export default function ComponentBuilderPage() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                            {/* ··· page menu */}
+                            {/* page menu */}
                             <div className="relative">
                                 <button onClick={() => setShowPageMenu(!showPageMenu)}
                                     className="w-9 h-9 flex items-center justify-center rounded-lg text-lg font-bold transition-all"
@@ -399,7 +395,7 @@ export default function ComponentBuilderPage() {
                 </aside>
             )}
 
-            {/* add field type modal */}
+            {/* add field type */}
             {showFieldTypeModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="rounded-2xl w-full max-w-2xl mx-4 shadow-2xl border"
@@ -430,7 +426,7 @@ export default function ComponentBuilderPage() {
                 </div>
             )}
 
-            {/* ── delete component confirm modal ── */}
+            {/* delete component confirm */}
             {showDeleteConfirm && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="rounded-2xl w-full max-w-md mx-4 p-6 shadow-2xl border"

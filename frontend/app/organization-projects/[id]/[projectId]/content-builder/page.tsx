@@ -13,7 +13,6 @@ import MainSidebar from '@/app/components/MainSidebar';
 import ProjectSidebar from '@/app/components/ProjectSidebar';
 import { usePageSetup, COLORS } from '../../../../hooks/usagePageSetup';
 
-/* ── types ── */
 interface SinglePage { id: string; name: string; apiId: string; multiLanguage: boolean; seoEnabled: boolean; workflowEnabled: boolean; fields?: any[] }
 interface MultiplePage { id: string; name: string; apiId: string; multiLanguage: boolean; seoEnabled: boolean; workflowEnabled: boolean; fields?: any[] }
 interface Component { id: string; name: string; apiId: string; fields?: any[] }
@@ -37,7 +36,6 @@ export default function ContentBuilderPage() {
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; type: 'single' | 'multiple' | 'component'; name: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  /* ── load data ── */
   const loadData = useCallback(async () => {
     try {
       const token = getToken();
@@ -55,7 +53,6 @@ export default function ContentBuilderPage() {
 
   useEffect(() => { initAuth(async () => { await loadData(); }); }, [orgId, projectId]);
 
-  /* ── delete handler ── */
   const handleDelete = async () => {
     if (!deleteConfirm) return;
     try {
@@ -70,7 +67,6 @@ export default function ContentBuilderPage() {
     finally { setDeleting(false); }
   };
 
-  /* ── navigate to create pages ── */
   const goCreate = (type: 'single' | 'multiple' | 'component') => {
     const base = `/organization-projects/${orgId}/${projectId}/content-builder`;
     if (type === 'single') router.push(`${base}/single-page/create`);
@@ -92,7 +88,7 @@ export default function ContentBuilderPage() {
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: darkMode ? '#1E1E2E' : '#F5F7FA', color: darkMode ? '#E0E0E0' : '#1E293B' }}>
 
-      {/* ── sidebars ── */}
+      {/* sidebars */}
       <MainSidebar darkMode={darkMode} collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} onLogout={handleLogout} />
       <ProjectSidebar
         projectName="Project" projectId={projectId} orgId={orgId}
@@ -100,7 +96,7 @@ export default function ContentBuilderPage() {
         singlePages={singlePages} multiplePages={multiplePages} components={components}
       />
 
-      {/* ── main ── */}
+      {/* main */}
       <div className="flex-1 flex flex-col">
 
         {/* top bar */}
@@ -208,7 +204,7 @@ export default function ContentBuilderPage() {
         </div>
       </div>
 
-      {/* ── delete confirm modal ── */}
+      {/* delete confirm */}
       {deleteConfirm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="rounded-2xl w-full max-w-md mx-4 p-6 shadow-2xl border"

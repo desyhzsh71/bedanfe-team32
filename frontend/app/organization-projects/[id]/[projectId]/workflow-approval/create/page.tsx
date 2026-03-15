@@ -127,7 +127,6 @@ export default function CreateWorkflowPage() {
             />
 
             <div className="flex-1 flex flex-col overflow-hidden">
-                {/* Top Bar */}
                 <div className="sticky top-0 z-40 border-b shrink-0"
                     style={{ backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF', borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>
                     <div className="px-8 py-4 flex justify-between items-center">

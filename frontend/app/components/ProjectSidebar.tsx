@@ -73,12 +73,12 @@ export default function ProjectSidebar({
     const [expCB, setExpCB] = useState(currentPath.includes('/content-builder'));
     const [expCM, setExpCM] = useState(currentPath.includes('/content-management'));
 
-    // Content Builder expand states
+    // Content Builder expand 
     const [expSingle, setExpSingle] = useState(true);
     const [expMultiple, setExpMultiple] = useState(true);
     const [expComp, setExpComp] = useState(true);
 
-    // Content Management expand states
+    // Content Management expand 
     const [expCMSingle, setExpCMSingle] = useState(true);
     const [expCMMultiple, setExpCMMultiple] = useState(true);
 

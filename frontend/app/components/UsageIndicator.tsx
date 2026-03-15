@@ -26,13 +26,11 @@ export default function UsageIndicator({
 }: UsageIndicatorProps) {
     const router = useRouter();
 
-    // Handle undefined/null limit
     if (!limit && limit !== 0) {
         return null;
     }
 
     const isUnlimited = limit === 'unlimited';
-    // Fix: Check if limit exists before converting
     const limitNum = isUnlimited ? Infinity : (typeof limit === 'number' ? limit : parseInt(limit) || 0);
     const percentage = isUnlimited ? 0 : (current / limitNum) * 100;
     const isWarning = percentage >= 80;
@@ -58,7 +56,7 @@ export default function UsageIndicator({
                 </span>
             </div>
 
-            {/* Progress Bar (only for limited plans) */}
+            {/* Progress Bar (cuma untuk limited plans) */}
             {!isUnlimited && (
                 <>
                     <div className="w-full h-2 rounded-full overflow-hidden mb-2"

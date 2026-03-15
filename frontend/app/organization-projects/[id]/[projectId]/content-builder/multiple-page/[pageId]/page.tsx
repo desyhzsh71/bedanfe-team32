@@ -13,7 +13,6 @@ import MainSidebar from '@/app/components/MainSidebar';
 import ProjectSidebar from '@/app/components/ProjectSidebar';
 import { usePageSetup, COLORS } from '../../../../../../hooks/usagePageSetup';
 
-/* ── types ── */
 interface Field {
     id: string; name: string; apiId: string; type: string;
     required: boolean; unique: boolean; validations?: any; options?: any; order?: number;
@@ -104,7 +103,6 @@ export default function MultiplePageBuilderPage() {
         }
     }, [selectedField]);
 
-    /* ── field actions ── */
     const handleAddField = async (type: string, subtype?: string) => {
         try {
             const token = getToken()!;
@@ -132,7 +130,6 @@ export default function MultiplePageBuilderPage() {
         } catch (e) { console.error(e); }
     };
 
-    /* ── delete page ── */
     const handleDeletePage = async () => {
         try {
             setDeleting(true);
@@ -145,7 +142,6 @@ export default function MultiplePageBuilderPage() {
         }
     };
 
-    /* ── drag reorder ── */
     const handleDragStart = (i: number) => { dragIndex.current = i; };
     const handleDragOver = (e: React.DragEvent, i: number) => {
         e.preventDefault();
@@ -181,7 +177,6 @@ export default function MultiplePageBuilderPage() {
 
             <div className="flex-1 flex flex-col overflow-hidden">
 
-                {/* top bar */}
                 <div className="sticky top-0 z-40 border-b shrink-0"
                     style={{ backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF', borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>
                     <div className="px-8 py-4 flex justify-between items-center">
@@ -202,7 +197,7 @@ export default function MultiplePageBuilderPage() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                            {/* ··· page menu */}
+                            {/* page menu */}
                             <div className="relative">
                                 <button onClick={() => setShowPageMenu(!showPageMenu)}
                                     className="w-9 h-9 flex items-center justify-center rounded-lg text-lg font-bold transition-all"
@@ -418,7 +413,7 @@ export default function MultiplePageBuilderPage() {
                 </aside>
             )}
 
-            {/* add field type modal */}
+            {/* add field type */}
             {showFieldTypeModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="rounded-2xl w-full max-w-2xl mx-4 shadow-2xl border"
@@ -449,7 +444,7 @@ export default function MultiplePageBuilderPage() {
                 </div>
             )}
 
-            {/* ── delete page confirm modal ── */}
+            {/* delete page confirm */}
             {showDeleteConfirm && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="rounded-2xl w-full max-w-md mx-4 p-6 shadow-2xl border"

@@ -300,7 +300,6 @@ export default function OrganizationCollaboratorsPage() {
             const token = getToken();
             if (!token) return;
 
-            // KIRIM organizationId juga
             const response = await api.removeCollaborator(memberId, orgId, token);
 
             if (response.success) {
@@ -441,7 +440,7 @@ export default function OrganizationCollaboratorsPage() {
                         );
                     })}
 
-                    {/* Divider + Info */}
+                    {/* Divider & Info */}
                     {!sidebarCollapsed && (
                         <div className="mt-6 mb-4 px-4">
                             <div className="border-t pt-4" style={{ borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>
@@ -697,7 +696,7 @@ export default function OrganizationCollaboratorsPage() {
                         </div>
                     </div>
 
-                    {/* Search and Add Button */}
+                    {/* Search & Add Button */}
                     <div className="p-6 transition-all duration-300"
                         style={{
                             backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF',

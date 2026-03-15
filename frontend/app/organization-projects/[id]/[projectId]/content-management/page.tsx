@@ -12,7 +12,6 @@ import MainSidebar from '@/app/components/MainSidebar';
 import ProjectSidebar from '@/app/components/ProjectSidebar';
 import { usePageSetup, COLORS } from '../../../../hooks/usagePageSetup';
 
-/* ── types ── */
 interface SinglePage { id: string; name: string; apiId: string; multiLanguage: boolean; seoEnabled: boolean; workflowEnabled: boolean; fields?: any[] }
 interface MultiplePage { id: string; name: string; apiId: string; multiLanguage: boolean; seoEnabled: boolean; workflowEnabled: boolean; fields?: any[] }
 interface Component { id: string; name: string; apiId: string; fields?: any[] }
@@ -66,7 +65,6 @@ export default function ContentManagementPage() {
     return (
         <div className="flex min-h-screen" style={{ backgroundColor: darkMode ? '#1E1E2E' : '#F5F7FA', color: darkMode ? '#E0E0E0' : '#1E293B' }}>
 
-            {/* ── sidebars ── */}
             <MainSidebar darkMode={darkMode} collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} onLogout={handleLogout} />
             <ProjectSidebar
                 projectName="Project" projectId={projectId} orgId={orgId}
@@ -74,10 +72,8 @@ export default function ContentManagementPage() {
                 singlePages={singlePages} multiplePages={multiplePages} components={components}
             />
 
-            {/* ── main ── */}
             <div className="flex-1 flex flex-col">
 
-                {/* top bar */}
                 <div className="sticky top-0 z-40 border-b"
                     style={{ backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF', borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>
                     <div className="px-8 py-4 flex justify-between items-center">
@@ -140,7 +136,6 @@ export default function ContentManagementPage() {
                     </div>
                 </div>
 
-                {/* welcome panel */}
                 <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
                     <div className="max-w-2xl w-full">
                         <div className="rounded-2xl p-10"
@@ -152,7 +147,6 @@ export default function ContentManagementPage() {
                                 Select a page below to start managing its content. You can fill in fields, manage entries, and configure SEO settings for each page in your project.
                             </p>
 
-                            {/* single pages section */}
                             {singlePages.length > 0 && (
                                 <div className="mb-6">
                                     <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: darkMode ? '#64748B' : '#94A3B8' }}>
@@ -174,7 +168,6 @@ export default function ContentManagementPage() {
                                 </div>
                             )}
 
-                            {/* multiple pages section */}
                             {multiplePages.length > 0 && (
                                 <div className="mb-6">
                                     <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: darkMode ? '#64748B' : '#94A3B8' }}>
@@ -196,7 +189,6 @@ export default function ContentManagementPage() {
                                 </div>
                             )}
 
-                            {/* empty state */}
                             {singlePages.length === 0 && multiplePages.length === 0 && (
                                 <div className="text-center py-6">
                                     <div className="text-4xl mb-3">📝</div>

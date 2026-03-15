@@ -23,8 +23,6 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
   return (
     <>
       {children}
-      {/* Bisa akses toggleTheme di page lewat props/context */}
-      {/* Contoh: di page bisa import dan pakai toggleTheme langsung */}
     </>
   );
 }

@@ -15,12 +15,10 @@ export default function ProjectSelector() {
   const [error, setError] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Fetch projects on mount
   useEffect(() => {
     fetchProjects();
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -70,20 +68,18 @@ export default function ProjectSelector() {
             status: p.status
           } as Project));
           
-          console.log(`✅ Loaded ${mapped.length} personal projects`);
+          console.log(`Loaded ${mapped.length} personal projects`);
           allProjects.push(...mapped);
         }
       } catch (error) {
-        console.error('❌ Failed to fetch personal projects:', error);
+        console.error('Failed to fetch personal projects:', error);
       }
 
-      // Fetch organizational projects
       try {
         const orgsRes = await api.getOrganizations(token);
-        console.log('🏢 Organizations response:', orgsRes);
+        console.log('Organizations response:', orgsRes);
         
         if (orgsRes.success && orgsRes.data) {
-          // Handle different response structures
           let organizations = [];
           
           if (Array.isArray(orgsRes.data)) {
@@ -96,11 +92,10 @@ export default function ProjectSelector() {
           
           console.log(`Found ${organizations.length} organizations`);
           
-          // Fetch projects for each organization
           for (const org of organizations) {
             try {
               const orgProjectsRes = await api.getProjectsByOrganization(org.id, token);
-              console.log(`📁 Projects for org ${org.name}:`, orgProjectsRes);
+              console.log(`Projects for org ${org.name}:`, orgProjectsRes);
               
               if (orgProjectsRes.success && orgProjectsRes.data) {
                 let orgProjects = [];
@@ -122,22 +117,22 @@ export default function ProjectSelector() {
                   status: p.status
                 } as Project));
                 
-                console.log(`✅ Loaded ${mapped.length} projects from ${org.name}`);
+                console.log(`Loaded ${mapped.length} projects from ${org.name}`);
                 allProjects.push(...mapped);
               }
             } catch (error) {
-              console.error(`❌ Failed to fetch projects for org ${org.id}:`, error);
+              console.error(`Failed to fetch projects for org ${org.id}:`, error);
             }
           }
         }
       } catch (error) {
-        console.error('❌ Failed to fetch organizations:', error);
+        console.error('Failed to fetch organizations:', error);
       }
 
-      console.log(`🎉 Total projects loaded: ${allProjects.length}`);
+      console.log(`Total projects loaded: ${allProjects.length}`);
       setProjects(allProjects);
     } catch (error) {
-      console.error('❌ Failed to fetch projects:', error);
+      console.error('Failed to fetch projects:', error);
       setError('Failed to load projects');
     } finally {
       setLoading(false);

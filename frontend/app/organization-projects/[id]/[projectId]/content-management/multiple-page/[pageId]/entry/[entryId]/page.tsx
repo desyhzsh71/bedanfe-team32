@@ -230,7 +230,6 @@ export default function EditEntryPage() {
 
             <div className="flex-1 flex flex-col overflow-hidden">
 
-                {/* ── top bar ── */}
                 <div className="sticky top-0 z-40 border-b shrink-0"
                     style={{ backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF', borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>
                     <div className="px-8 py-4 flex justify-between items-center">
@@ -330,7 +329,7 @@ export default function EditEntryPage() {
                     </div>
                 </div>
 
-                {/* ── content ── */}
+                {/* content */}
                 <div className="flex-1 overflow-y-auto p-6">
                     <div className="max-w-3xl mx-auto space-y-4">
 
@@ -432,7 +431,7 @@ export default function EditEntryPage() {
                 </div>
             </div>
 
-            {/* ── Delete Modal ── */}
+            {/* Delete */}
             {showDeleteConfirm && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="rounded-2xl w-full max-w-md mx-4 p-6 shadow-2xl border"
@@ -462,7 +461,7 @@ export default function EditEntryPage() {
                 </div>
             )}
 
-            {/* ── Translate Modal ── */}
+            {/* Translate Modal */}
             {showTranslate && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="rounded-2xl w-full max-w-md mx-4 shadow-2xl border overflow-hidden"

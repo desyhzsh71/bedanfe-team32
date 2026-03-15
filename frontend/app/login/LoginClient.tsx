@@ -149,7 +149,7 @@ export default function LoginClient() {
 
     return (
         <div className="grid grid-cols-2 min-h-screen">
-            {/* Left Side - Form */}
+            {/* Left Side: Form */}
             <div
                 className="relative p-8 flex items-center justify-center"
                 style={{
@@ -308,7 +308,7 @@ export default function LoginClient() {
                 </div>
             </div>
 
-            {/* Right Side - Logo */}
+            {/* Right Side: Logo */}
             <div
                 className="min-h-screen flex items-center justify-center"
                 style={{

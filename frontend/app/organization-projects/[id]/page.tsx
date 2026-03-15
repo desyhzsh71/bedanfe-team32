@@ -379,7 +379,6 @@ export default function OrganizationProjectsPage() {
                     </div>
                 </div>
 
-                {/* ✅ Sidebar nav - hanya menu yang accessible tanpa project context */}
                 <nav className="p-4">
                     {menuItems.map((item) => {
                         const isActive = activeMenu === item.name;
@@ -570,7 +569,7 @@ export default function OrganizationProjectsPage() {
 
                 {/* Page Content */}
                 <div className="flex-1 p-8 overflow-y-auto">
-                    {/* Header Card */}
+                    {/* Header */}
                     <div className="rounded-xl p-8 mb-6 transition-all duration-300"
                         style={{
                             backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF',
@@ -642,7 +641,7 @@ export default function OrganizationProjectsPage() {
                         </div>
                     </div>
 
-                    {/* Search and Create Row */}
+                    {/* Search & Create */}
                     <div className="flex gap-4 mb-6">
                         <div className="flex-1 rounded-xl p-4 transition-all duration-300"
                             style={{
@@ -749,7 +748,6 @@ export default function OrganizationProjectsPage() {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center justify-center gap-3">
-                                                    {/* ✅ Button Enter yang sudah diperbaiki route-nya */}
                                                     <button
                                                         onClick={() => handleEnterProject(project)}
                                                         className="px-3 py-2 text-white rounded-lg transition flex items-center gap-2 text-sm font-medium"

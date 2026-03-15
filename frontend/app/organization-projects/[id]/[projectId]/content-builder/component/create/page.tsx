@@ -100,7 +100,6 @@ export default function CreateComponent() {
 
             <div className="flex-1 flex flex-col">
 
-                {/* top bar */}
                 <div className="sticky top-0 z-40 border-b"
                     style={{ backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF', borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>
                     <div className="px-8 py-4 flex justify-between items-center">

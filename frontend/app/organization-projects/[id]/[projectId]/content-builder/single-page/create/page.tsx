@@ -52,7 +52,6 @@ export default function CreateSinglePage() {
     const [multiplePages, setMultiplePages] = useState<MultiplePage[]>([]);
     const [components, setComponents] = useState<Component[]>([]);
 
-    // form — no emoji, API doesn't support it
     const [tab, setTab] = useState<'basic' | 'advanced'>('basic');
     const [name, setName] = useState('');
     const [apiId, setApiId] = useState('');
@@ -129,7 +128,6 @@ export default function CreateSinglePage() {
 
             <div className="flex-1 flex flex-col">
 
-                {/* top bar */}
                 <div className="sticky top-0 z-40 border-b"
                     style={{ backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF', borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>
                     <div className="px-8 py-4 flex justify-between items-center">

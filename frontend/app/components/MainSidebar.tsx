@@ -37,7 +37,7 @@ export default function MainSidebar({ darkMode, collapsed, onCollapse, onLogout 
             className="sticky top-0 h-screen flex flex-col shrink-0 transition-all duration-300"
             style={{ width: collapsed ? '80px' : '260px', backgroundColor: bg, borderRight: `1px solid ${border}` }}
         >
-            {/* ── logo ── */}
+            {/* logo */}
             <div
                 className="p-6 border-b sticky top-0 z-10"
                 style={{ borderColor: border, backgroundColor: bg }}
@@ -59,7 +59,7 @@ export default function MainSidebar({ darkMode, collapsed, onCollapse, onLogout 
                 </div>
             </div>
 
-            {/* ── nav ── */}
+            {/* nav */}
             <nav className="flex-1 p-4 overflow-y-auto">
                 {menuItems.map(item => {
                     const isActive = pathname?.startsWith(item.path) ?? false;
@@ -93,7 +93,7 @@ export default function MainSidebar({ darkMode, collapsed, onCollapse, onLogout 
                 )}
             </nav>
 
-            {/* ── logout ── */}
+            {/* logout */}
             {!collapsed && (
                 <div className="p-4 border-t" style={{ borderColor: border, backgroundColor: bg }}>
                     <button

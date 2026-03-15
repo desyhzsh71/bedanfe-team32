@@ -260,7 +260,7 @@ export default function CreateWorkflowForm({
                         </select>
                         {errors.relatedTo && <p className="text-red-500 text-sm mt-1">{errors.relatedTo}</p>}
                         <p className="text-sm mt-2" style={{ color: darkMode ? '#94A3B8' : '#6B7280' }}>
-                            💡 This groups workflows by their business function
+                            This groups workflows by their business function
                         </p>
                     </div>
 

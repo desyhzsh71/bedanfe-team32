@@ -47,7 +47,6 @@ export default function SinglePageContentPage() {
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
 
-    /* translate */
     const [showTranslateModal, setShowTranslateModal] = useState(false);
     const [translateDir, setTranslateDir] = useState<'id-en' | 'en-id'>('id-en');
     const [translating, setTranslating] = useState(false);
@@ -92,7 +91,6 @@ export default function SinglePageContentPage() {
         setContent(prev => ({ ...prev, [apiId]: value }));
     };
 
-    /* ── Translate handler ── */
     const handleTranslate = async () => {
         const textFields = fields.filter(f => f.type === 'TEXT');
         if (textFields.length === 0) return;
@@ -126,7 +124,6 @@ export default function SinglePageContentPage() {
         setTranslatePreview({});
     };
 
-    /* ── Render field ── */
     const inputStyle = {
         backgroundColor: darkMode ? '#3F3F52' : '#F8FAFC',
         borderColor: darkMode ? '#3F3F52' : '#E2E8F0',
@@ -211,7 +208,6 @@ export default function SinglePageContentPage() {
 
             <div className="flex-1 flex flex-col overflow-hidden">
 
-                {/* top bar */}
                 <div className="sticky top-0 z-40 border-b shrink-0"
                     style={{ backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF', borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>
                     <div className="px-8 py-4 flex justify-between items-center">
@@ -293,8 +289,7 @@ export default function SinglePageContentPage() {
                         </div>
                     </div>
                 </div>
-
-                {/* content area */}
+                
                 <div className="flex-1 overflow-y-auto p-6">
                     <div className="max-w-3xl mx-auto">
                         <div className="rounded-2xl border overflow-hidden"
@@ -377,7 +372,7 @@ export default function SinglePageContentPage() {
                 </div>
             </div>
 
-            {/* ── Translate Modal ── */}
+            {/* Translate Modal */}
             {showTranslateModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="rounded-2xl w-full max-w-lg mx-4 shadow-2xl border overflow-hidden"
@@ -393,7 +388,6 @@ export default function SinglePageContentPage() {
                         </div>
 
                         <div className="p-6 space-y-5">
-                            {/* Direction picker */}
                             <div>
                                 <label className="block text-sm font-medium mb-3" style={{ color: darkMode ? '#E0E0E0' : '#374151' }}>Translation Direction</label>
                                 <div className="flex gap-3">

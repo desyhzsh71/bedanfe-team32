@@ -1,5 +1,3 @@
-// components/WorkflowInlineForm.tsx
-// Sesuai UI: Workflow Name, Related To (row 1), Key Approval Stage (row 2), Stages accordion, Save button
 'use client';
 
 import { useState } from 'react';
@@ -55,7 +53,6 @@ export default function WorkflowInlineForm({ darkMode, initialData, onSubmit, is
         initialData?.stages?.map((s, i) => ({ ...s, collapsed: false, order: s.order ?? i + 1 })) || []
     );
 
-    // Styles
     const hdr: React.CSSProperties = {
         backgroundColor: COLORS.info, color: '#FFFFFF',
         padding: '8px 14px', borderRadius: '8px 8px 0 0',
@@ -72,7 +69,6 @@ export default function WorkflowInlineForm({ darkMode, initialData, onSubmit, is
     const focus = (e: React.FocusEvent<HTMLElement>) => { (e.target as any).style.borderColor = COLORS.primary; };
     const blur = (e: React.FocusEvent<HTMLElement>) => { (e.target as any).style.borderColor = darkMode ? '#3F3F52' : '#D1D5DB'; };
 
-    // Stage helpers
     const addStage = () => setStages(prev => [...prev, {
         name: '', rolesAllowed: [], highlightColor: HIGHLIGHT_COLORS[0].value,
         order: prev.length + 1, description: '', collapsed: false,
@@ -100,7 +96,7 @@ export default function WorkflowInlineForm({ darkMode, initialData, onSubmit, is
         <div style={{ maxWidth: '900px' }}>
             <div className="space-y-5">
 
-                {/* Row 1 — Workflow Name & Related To */}
+                {/* Row 1: Workflow Name & Related To */}
                 <div className="grid grid-cols-2 gap-5">
                     <div>
                         <div style={hdr}>Workflow Name*</div>
@@ -119,7 +115,7 @@ export default function WorkflowInlineForm({ darkMode, initialData, onSubmit, is
                     </div>
                 </div>
 
-                {/* Row 2 — Key Approval Stage (half width) */}
+                {/* Row 2: Key Approval Stage (half width) */}
                 <div style={{ maxWidth: '440px' }}>
                     <div style={hdr}>Key Approval Stage*</div>
                     <select value={keyApproval} onChange={e => setKeyApproval(e.target.value)}

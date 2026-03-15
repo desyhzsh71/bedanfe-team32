@@ -357,7 +357,6 @@ export default function OrganizationProjectsPage() {
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col">
-                {/* Top Bar */}
                 <div className="sticky top-0 z-40 border-b transition-colors duration-300"
                     style={{
                         backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF',
@@ -466,7 +465,7 @@ export default function OrganizationProjectsPage() {
 
                 {/* Page Content */}
                 <div className="flex-1 p-8 overflow-y-auto">
-                    {/* Header Card - Full Width */}
+                    {/* Header */}
                     <div className="rounded-xl p-8 mb-6 transition-all duration-300"
                         style={{
                             backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF',
@@ -501,7 +500,7 @@ export default function OrganizationProjectsPage() {
                         </div>
                     </div>
 
-                    {/* Search and Create Row */}
+                    {/* Search & Create */}
                     <div className="flex gap-4 mb-6">
                         <div className="flex-1 rounded-xl p-4 transition-all duration-300"
                             style={{

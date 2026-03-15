@@ -279,7 +279,7 @@ export default function DashboardPage() {
     return (
         <div className="flex min-h-screen" style={{ backgroundColor: bg, color: textMain }}>
 
-            {/* ───── SIDEBAR ───── */}
+            {/* SIDEBAR */}
             <div className="sticky top-0 h-screen overflow-y-auto transition-all duration-300"
                 style={{ width: sidebarCollapsed ? '80px' : '260px', backgroundColor: cardBg, borderRight: `1px solid ${border}` }}>
                 <div className="p-6 border-b sticky top-0 z-10"
@@ -346,7 +346,7 @@ export default function DashboardPage() {
                 )}
             </div>
 
-            {/* ───── MAIN ───── */}
+            {/* MAIN */}
             <div className="flex-1 flex flex-col">
 
                 {/* Top Bar */}
@@ -412,7 +412,7 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
-                {/* ───── DASHBOARD CONTENT ───── */}
+                {/* DASHBOARD CONTENT */}
                 <div className="flex-1 p-8 overflow-y-auto">
 
                     {/* Stats Cards */}
@@ -445,10 +445,10 @@ export default function DashboardPage() {
                         ))}
                     </div>
 
-                    {/* ── CHARTS ROW ── */}
+                    {/* CHARTS ROW */}
                     <div className="grid grid-cols-2 gap-6 mb-8">
 
-                        {/* DONUT CHART — Project Status */}
+                        {/* DONUT CHART: Project Status */}
                         <div className="rounded-2xl p-6" style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}>
                             <h3 className="text-base font-semibold mb-4 text-center" style={{ color: textMain }}>Project Status</h3>
                             <div className="flex flex-col items-center">
@@ -460,17 +460,17 @@ export default function DashboardPage() {
                                             stroke={darkMode ? '#3F3F52' : '#E2E8F0'} strokeWidth="14" />
                                         {totalProjects > 0 ? (
                                             <>
-                                                {/* Active — Green */}
+                                                {/* Active: Green */}
                                                 <circle cx="50" cy="50" r="38" fill="none"
                                                     stroke="#10B981" strokeWidth="14"
                                                     strokeDasharray={`${activeLen} ${circumference}`}
                                                     strokeDashoffset="0" />
-                                                {/* Completed — Blue */}
+                                                {/* Completed: Blue */}
                                                 <circle cx="50" cy="50" r="38" fill="none"
                                                     stroke="#3A7AC3" strokeWidth="14"
                                                     strokeDasharray={`${completedLen} ${circumference}`}
                                                     strokeDashoffset={`-${activeLen}`} />
-                                                {/* Archived — Gray */}
+                                                {/* Archived: Gray */}
                                                 <circle cx="50" cy="50" r="38" fill="none"
                                                     stroke="#6B7280" strokeWidth="14"
                                                     strokeDasharray={`${archivedLen} ${circumference}`}
@@ -478,7 +478,7 @@ export default function DashboardPage() {
                                             </>
                                         ) : null}
                                     </svg>
-                                    {/* Center: persentase active */}
+
                                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                                         <span className="text-3xl font-bold" style={{ color: '#10B981' }}>
                                             {totalProjects > 0 ? Math.round((projectStatusStats.active / totalProjects) * 100) : 0}%
@@ -487,7 +487,6 @@ export default function DashboardPage() {
                                     </div>
                                 </div>
 
-                                {/* Legend bawah */}
                                 <div className="flex justify-center gap-5 mt-4">
                                     {[
                                         { label: 'Active', color: '#10B981', pct: totalProjects > 0 ? Math.round((projectStatusStats.active / totalProjects) * 100) : 0 },
@@ -504,13 +503,12 @@ export default function DashboardPage() {
                             </div>
                         </div>
 
-                        {/* GROUPED BAR CHART — Projects Detail */}
+                        {/* Projects Detail */}
                         <div className="rounded-2xl p-6" style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}>
                             <h3 className="text-base font-semibold mb-4 text-center" style={{ color: textMain }}>Projects Details</h3>
 
                             {contentStats.length > 0 ? (
                                 (() => {
-                                    // Hitung max dari data aktual untuk Y-axis
                                     const dataMax = Math.max(...contentStats.flatMap(d => [d.singlePages, d.multiplePages]), 1);
                                     const yMax = Math.ceil(dataMax * 1.25);
                                     const yStep = Math.max(1, Math.ceil(yMax / 4));
@@ -525,7 +523,6 @@ export default function DashboardPage() {
                                     return (
                                         <>
                                             <div className="flex">
-                                                {/* Y labels */}
                                                 <div className="flex flex-col justify-between pr-2 text-right" style={{ height: chartH }}>
                                                     {yLabels.map(v => (
                                                         <span key={v} className="text-xs leading-none" style={{ color: textMuted }}>{v}</span>
@@ -535,7 +532,6 @@ export default function DashboardPage() {
                                                 {/* SVG Chart */}
                                                 <div className="flex-1">
                                                     <svg width="100%" height={chartH} viewBox={`0 0 ${chartW} ${chartH}`} preserveAspectRatio="none">
-                                                        {/* Grid lines */}
                                                         {yLabels.map((v, i) => {
                                                             const y = (i / (yLabels.length - 1)) * chartH;
                                                             return (
@@ -569,7 +565,6 @@ export default function DashboardPage() {
                                                         })}
                                                     </svg>
 
-                                                    {/* X-axis labels */}
                                                     <div className="flex mt-1">
                                                         {contentStats.map((item, i) => (
                                                             <div key={i} className="text-center px-0.5" style={{ flex: 1 }}>
@@ -582,7 +577,6 @@ export default function DashboardPage() {
                                                 </div>
                                             </div>
 
-                                            {/* Legend */}
                                             <div className="flex justify-center gap-6 mt-3">
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#534581' }} />
@@ -606,7 +600,7 @@ export default function DashboardPage() {
                         </div>
                     </div>
 
-                    {/* ── BOTTOM: Recently Activity + List Project ── */}
+                    {/* Recently Activity + List Project */}
                     <div className="grid grid-cols-2 gap-6">
 
                         {/* Recently Activity */}

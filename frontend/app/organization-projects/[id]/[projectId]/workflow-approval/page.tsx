@@ -151,7 +151,6 @@ export default function WorkflowApprovalPage() {
             />
 
             <div className="flex-1 flex flex-col overflow-hidden">
-                {/* top bar */}
                 <div className="sticky top-0 z-40 border-b shrink-0"
                     style={{ backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF', borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>
                     <div className="px-8 py-4 flex justify-between items-center">
@@ -245,7 +244,7 @@ export default function WorkflowApprovalPage() {
 
                 <div className="flex-1 overflow-y-auto p-6">
 
-                    {/* ── CREATE FORM ── */}
+                    {/* CREATE FORM */}
                     {showCreate && (
                         <div className="max-w-2xl mx-auto space-y-5">
                             {form.error && (
@@ -417,7 +416,7 @@ export default function WorkflowApprovalPage() {
                         </div>
                     )}
 
-                    {/* ── WORKFLOW LIST ── */}
+                    {/* WORKFLOW LIST */}
                     {!showCreate && (
                         <div className="rounded-2xl border overflow-hidden"
                             style={{ backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF', borderColor: darkMode ? '#3F3F52' : '#E2E8F0' }}>

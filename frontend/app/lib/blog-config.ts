@@ -11,21 +11,20 @@ let blogConfigCache: {
 
 export async function getBlogMultiplePageId(
     projectId: string,
-    blogPageName: string = 'Blog Articles' // Default nama
+    blogPageName: string = 'Blog Articles'
 ): Promise<string> {
-    // Return dari cache kalau sudah pernah fetch
+
     if (blogConfigCache.multiplePageId && blogConfigCache.projectId === projectId) {
-        console.log('✅ Using cached Blog Page ID:', blogConfigCache.multiplePageId);
+        console.log('Using cached Blog Page ID:', blogConfigCache.multiplePageId);
         return blogConfigCache.multiplePageId;
     }
 
-    console.log('🔍 Fetching Blog Page ID for:', blogPageName);
+    console.log('Fetching Blog Page ID for:', blogPageName);
 
     try {
         const token = getToken();
         if (!token) throw new Error('Not authenticated');
 
-        // Fetch semua multiple pages dari project ini
         const response = await api.getMultiplePagesByProject(projectId, token);
 
         if (!response.success || !response.data) {
@@ -34,7 +33,6 @@ export async function getBlogMultiplePageId(
 
         console.log('📄 Available Multiple Pages:', response.data.map((p: any) => p.name));
 
-        // Cari multiple page berdasarkan nama
         const blogPage = response.data.find(
             (page: any) => page.name === blogPageName
         );
@@ -45,15 +43,14 @@ export async function getBlogMultiplePageId(
             );
         }
 
-        // Save ke cache
         blogConfigCache.multiplePageId = blogPage.id;
         blogConfigCache.projectId = projectId;
 
-        console.log('✅ Found Blog Page ID:', blogPage.id);
+        console.log('Found Blog Page ID:', blogPage.id);
         return blogPage.id;
 
     } catch (error) {
-        console.error('❌ Error getting blog page ID:', error);
+        console.error('Error getting blog page ID:', error);
         throw error;
     }
 }
@@ -63,5 +60,5 @@ export function clearBlogConfig() {
         multiplePageId: null,
         projectId: null,
     };
-    console.log('🗑️ Blog config cache cleared');
+    console.log('Blog config cache cleared');
 }

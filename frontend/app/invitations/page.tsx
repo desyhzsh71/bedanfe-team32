@@ -332,14 +332,12 @@ export default function InvitationsPage() {
             {/* MAIN CONTENT */}
             <div className="flex-1 flex flex-col">
 
-                {/* TOP BAR */}
                 <div className="sticky top-0 z-40 border-b transition-colors duration-300"
                     style={{
                         backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF',
                         borderColor: darkMode ? '#3F3F52' : '#E2E8F0',
                     }}>
                     <div className="px-8 py-4 flex justify-between items-center">
-                        {/* Left: back + breadcrumb */}
                         <div className="flex items-center gap-4">
                             <button
                                 onClick={() => router.back()}
@@ -364,7 +362,6 @@ export default function InvitationsPage() {
                             </div>
                         </div>
 
-                        {/* Right */}
                         <div className="flex items-center gap-4">
                             <button
                                 onClick={handleDarkModeToggle}
@@ -460,7 +457,6 @@ export default function InvitationsPage() {
                 {/* PAGE CONTENT*/}
                 <div className="flex-1 p-8 overflow-y-auto">
 
-                    {/* Header Card */}
                     <div className="rounded-xl p-8 mb-6 transition-all duration-300"
                         style={{
                             backgroundColor: darkMode ? '#2D2D3F' : '#FFFFFF',
@@ -488,7 +484,6 @@ export default function InvitationsPage() {
                         </div>
                     </div>
 
-                    {/* Invitations List */}
                     {invitations.length === 0 ? (
                         <div className="rounded-xl p-12 text-center transition-all duration-300"
                             style={{

@@ -116,7 +116,7 @@ export default function ForgotPasswordPage() {
           </div>
         </div>
 
-        {/* Right Side - Logo */}
+        {/* Right Side: Logo */}
         <div
           className="min-h-screen flex items-center justify-center"
           style={{
@@ -131,14 +131,13 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="grid grid-cols-2 min-h-screen">
-      {/* Left Side - Form */}
+      {/* Left Side: Form */}
       <div
         className="p-8 flex items-center justify-center relative"
         style={{
           backgroundColor: darkMode ? '#1E1E2E' : '#FFFFFF',
         }}
       >
-        {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
           className="absolute top-6 left-6 p-2 rounded-full border transition"
@@ -226,7 +225,7 @@ export default function ForgotPasswordPage() {
         </div>
       </div>
 
-      {/* Right Side - Logo */}
+      {/* Right Side: Logo */}
       <div
         className="min-h-screen flex items-center justify-center"
         style={{

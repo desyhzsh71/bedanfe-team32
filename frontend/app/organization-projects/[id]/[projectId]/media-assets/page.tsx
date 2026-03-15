@@ -264,7 +264,6 @@ function DetailModal({ asset, darkMode, onClose, onSave, onReplace, onDelete, fo
     );
 }
 
-// ─── Folder Card ──────────────────────────────────────────────────────────────
 function FolderCard({ folder, darkMode, onDelete, onClick }: { folder: { id: string; name: string }; darkMode: boolean; onDelete: () => void; onClick: () => void }) {
     const [showMenu, setShowMenu] = useState(false);
     const bg = darkMode ? '#3A5080' : '#CBE0F5';

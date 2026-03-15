@@ -31,18 +31,14 @@ class ApiService {
     const data = await response.json();
 
     if (!response.ok) {
-      // ── FIX: Handle 404 — resource not found ─────────────────────────────
       if (
         response.status === 404 &&
         (data.message?.includes('not found') ||
           data.message?.includes('No active'))
       ) {
-        return data; // Return silently, don't throw
+        return data; 
       }
 
-      // ── FIX: Handle 400 — content belum pernah disimpan ──────────────────
-      // Backend mengembalikan 400 "Data is required" ketika konten belum ada,
-      // bukan 404. Kita tangkap ini dan return data kosong agar UI tidak error.
       if (
         response.status === 400 &&
         (data.message?.toLowerCase().includes('data is required') ||
