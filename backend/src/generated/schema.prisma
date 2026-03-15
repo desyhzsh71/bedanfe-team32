@@ -1,0 +1,768 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  output        = "../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  fullName String
+  email    String  @unique
+  company  String
+  job      String
+  country  String
+  password String
+  googleId String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi untuk mereset password
+  passwordResets PasswordReset[]
+
+  // relasi untuk organization
+  organizationsOwned  Organization[]       @relation("organization_owner")
+  organizationMembers OrganizationMember[]
+
+  // relasi untuk project
+  projectsCreated      Project[]             @relation("project_creator")
+  projectCollaborators ProjectCollaborator[]
+
+  // relasi untuk fitur plan and billing
+  subscriptions    Subscription[]
+  billingAddresses BillingAddress?
+  paymentMethods   PaymentMethod[]
+
+  approvals ContentWorkflowStage[]
+
+  // relasi untuk media asset 
+  createdMediaFolders MediaFolder[] @relation("MediaFolderCreator")
+  uploadedMediaAssets MediaAsset[]  @relation("MediaAssetUploader")
+
+  @@map("user")
+}
+
+model PasswordReset {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+  @@map("password_resets")
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  ownerId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  owner         User                 @relation("organization_owner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members       OrganizationMember[]
+  projects      Project[]
+  subscriptions Subscription[]
+  apiTokens     ApiToken[]
+  workflows     Workflow[]
+  mediaFolders  MediaFolder[]
+  mediaAssets   MediaAsset[]
+
+  @@index([ownerId])
+  @@map("organization")
+}
+
+model OrganizationMember {
+  id             String    @id @default(uuid())
+  userId         Int
+  organizationId String
+  role           Role
+  status         Status    @default(PENDING)
+  joinedAt       DateTime? @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // relasi
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@index([organizationId])
+  @@index([userId])
+  @@map("organization_member")
+}
+
+model Project {
+  id             String        @id @default(uuid())
+  name           String
+  description    String?
+  organizationId String?
+  createdBy      Int
+  deadline       DateTime?
+  status         ProjectStatus @default(ACTIVE)
+  customDomain   String?       @unique
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  // relasi
+  organization  Organization?         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  creator       User                  @relation("project_creator", fields: [createdBy], references: [id], onDelete: Cascade)
+  collaborators ProjectCollaborator[]
+  singlePages   SinglePage[]
+  multiplePages MultiplePage[]
+  components    Component[]
+
+  @@index([organizationId])
+  @@index([createdBy])
+  @@map("project")
+}
+
+model ProjectCollaborator {
+  id        String      @id @default(uuid())
+  projectId String
+  userId    Int
+  role      ProjectRole
+  status    Status      @default(PENDING)
+  addedAt   DateTime    @default(now())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  // relasi
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+  @@index([projectId])
+  @@index([userId])
+  @@map("project_collaborator")
+}
+
+model Plan {
+  id           String       @id @default(uuid())
+  name         String
+  description  String?
+  price        Decimal      @default(0) // untuk Free plan = 0
+  billingCycle BillingCycle // Monlthly, Yearly
+  features     Json
+  limits       Json
+  isActive     Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  // relasi
+  subscriptions Subscription[]
+
+  @@index([name])
+  @@map("plan")
+}
+
+model Subscription {
+  id             String             @id @default(uuid())
+  userId         Int?
+  organizationId String?
+  planId         String
+  status         SubscriptionStatus // ACTIVE, CANCELLED, EXPIRED, TRIAL
+  startDate      DateTime
+  endDate        DateTime?
+  autoRenew      Boolean            @default(true)
+
+  // Payment info
+  lastPaymentDate DateTime?
+  nextPaymentDate DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  plan         Plan          @relation(fields: [planId], references: [id], onDelete: Restrict)
+  user         User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  billingHistory      BillingHistory[]
+  usageTracking       UsageTracking[]
+  paymentTransactions PaymentTransaction[]
+
+  @@index([organizationId, status])
+  @@index([userId])
+  @@index([organizationId])
+  @@index([status])
+  @@map("subscription")
+}
+
+model BillingHistory {
+  id             String        @id @default(uuid())
+  subscriptionId String
+  invoiceNumber  String        @unique
+  planName       String
+  amount         Decimal
+  status         PaymentStatus
+  paidAt         DateTime?
+  invoiceUrl     String?
+  paymentMethod  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([subscriptionId])
+  @@index([status])
+  @@map("billing_history")
+}
+
+model BillingAddress {
+  id       String  @id @default(uuid())
+  userId   Int     @unique
+  fullName String
+  email    String
+  country  String
+  city     String
+  zipCode  String?
+  state    String
+  address  String
+  company  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("billing_address")
+}
+
+model PaymentMethod {
+  id     String      @id @default(uuid())
+  userId Int
+  type   PaymentType
+
+  // untuk credit card
+  cardLastFour String?
+  cardBrand    String?
+
+  // untuk e-wallet
+  walletProvider String?
+  walletPhone    String?
+
+  isDefault Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("payment_method")
+}
+
+model PaymentTransaction {
+  id             String  @id @default(uuid())
+  subscriptionId String
+  paymentGateway String
+  transactionId  String  @unique // dari payment gateway
+  amount         Decimal
+  status         String
+  redirectUrl    String?
+  webhookData    Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([subscriptionId])
+  @@index([transactionId])
+  @@map("payment_transaction")
+}
+
+model UsageTracking {
+  id             String @id @default(uuid())
+  subscriptionId String
+
+  // usage metrics
+  bandwidthUsed     Int @default(0) // in GB
+  apiCallsUsed      Int @default(0)
+  mediaAssetsUsed   Int @default(0)
+  projectsUsed      Int @default(0)
+  rolesUsed         Int @default(0)
+  collaboratorsUsed Int @default(0)
+  webhooksUsed      Int @default(0)
+  modelsUsed        Int @default(0)
+  localesUsed       Int @default(0)
+  recordsUsed       Int @default(0)
+
+  // period info
+  periodStart DateTime
+  periodEnd   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+}
+
+// single page 
+model SinglePage {
+  id        String @id @default(uuid())
+  projectId String
+  name      String
+  apiId     String // auto-generated untuk routesnya
+
+  // konfigurasi
+  multiLanguage   Boolean @default(false)
+  seoEnabled      Boolean @default(false)
+  workflowEnabled Boolean @default(false)
+
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  project             Project              @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  fields              Field[]
+  content             SinglePageContent?
+  workflowAssignments WorkflowAssignment[]
+
+  @@unique([projectId, apiId])
+  @@index([projectId])
+  @@map("single_page")
+}
+
+// multiple page
+model MultiplePage {
+  id        String @id @default(uuid())
+  projectId String
+  name      String
+  apiId     String
+
+  // konfigurasi
+  multiLanguage   Boolean @default(false)
+  seoEnabled      Boolean @default(false)
+  workflowEnabled Boolean @default(false)
+
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  project             Project              @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  fields              Field[]
+  entries             MultiplePageEntry[]
+  workflowAssignments WorkflowAssignment[]
+
+  @@unique([projectId, apiId])
+  @@index([projectId])
+  @@map("multiple_page")
+}
+
+// component
+model Component {
+  id        String @id @default(uuid())
+  projectId String
+  name      String
+  apiId     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  fields  Field[]
+
+  @@unique([projectId, apiId])
+  @@index([projectId])
+  @@map("component")
+}
+
+// field konfigurasi
+model Field {
+  id       String    @id @default(uuid())
+  name     String
+  apiId    String
+  type     FieldType
+  required Boolean   @default(false)
+  unique   Boolean   @default(false)
+  order    Int       @default(0)
+
+  // relasi
+  singlePageId   String?
+  multiplePageId String?
+  componentId    String?
+
+  validations  Json?
+  defaultValue Json?
+  options      Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  singlePage   SinglePage?   @relation(fields: [singlePageId], references: [id], onDelete: Cascade)
+  multiplePage MultiplePage? @relation(fields: [multiplePageId], references: [id], onDelete: Cascade)
+  component    Component?    @relation(fields: [componentId], references: [id], onDelete: Cascade)
+
+  @@index([singlePageId])
+  @@index([multiplePageId])
+  @@index([componentId])
+  @@map("field")
+}
+
+// konten untuk single page
+model SinglePageContent {
+  id           String  @id @default(uuid())
+  singlePageId String  @unique
+  data         Json
+  locale       String? @default("en")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  singlePage SinglePage @relation(fields: [singlePageId], references: [id], onDelete: Cascade)
+
+  @@map("single_page_content")
+}
+
+// entri untuk multiple page
+model MultiplePageEntry {
+  id             String  @id @default(uuid())
+  multiplePageId String
+  data           Json
+  locale         String? @default("en")
+  published      Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  multiplePage MultiplePage @relation(fields: [multiplePageId], references: [id], onDelete: Cascade)
+
+  @@index([multiplePageId])
+  @@map("multiple_page_entry")
+}
+
+model ApiToken {
+  id             String  @id @default(uuid())
+  organizationId String
+  name           String
+  description    String?
+
+  // konfigurasi token
+  token       String @unique // hashed token
+  tokenPrefix String
+
+  validityPeriod Int
+  accessScope    AccessScope @default(CUSTOM)
+  status         TokenStatus @default(ACTIVE)
+
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime
+  lastUsedAt DateTime?
+
+  // relasi
+  organization Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  permissions  ApiTokenPermission[]
+  usageLogs    ApiTokenUsageLog[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+  @@index([status])
+  @@index([token])
+  @@map("api_token")
+}
+
+model ApiTokenPermission {
+  id         String @id @default(uuid())
+  apiTokenId String
+  resource   String
+  action     String
+
+  createdAt DateTime @default(now())
+
+  // relasi
+  apiToken ApiToken @relation(fields: [apiTokenId], references: [id], onDelete: Cascade)
+
+  @@unique([apiTokenId, resource, action])
+  @@index([apiTokenId])
+  @@map("api_token_permissions")
+}
+
+model ApiTokenUsageLog {
+  id           String  @id @default(uuid())
+  apiTokenId   String
+  endpoint     String
+  method       String // get, post, put, delete, patch
+  ipAddress    String?
+  statusCode   Int
+  responseTime Int
+
+  createdAt DateTime @default(now())
+
+  // relasi
+  apiToken ApiToken @relation(fields: [apiTokenId], references: [id], onDelete: Cascade)
+
+  @@index([apiTokenId])
+  @@index([createdAt])
+  @@map("api_token_usage_log")
+}
+
+model Workflow {
+  id               String  @id @default(uuid())
+  organizationId   String
+  name             String
+  description      String?
+  relatedTo        String // "Content Management", "Single Page", "Multiple Page"
+  keyApprovalStage String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  organization Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  stages       WorkflowStage[]
+  assignments  WorkflowAssignment[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+  @@map("workflow")
+}
+
+model WorkflowStage {
+  id             String  @id @default(uuid())
+  workflowId     String
+  name           String
+  description    String?
+  order          Int     @default(0)
+  highlightColor String  @default("#E91E63")
+  rolesAllowed   Json // role: ["Super Admin", "Editor", "Author"]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  workflow      Workflow               @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  contentStages ContentWorkflowStage[]
+
+  @@unique([workflowId, name])
+  @@index([workflowId])
+  @@map("workflow_stage")
+}
+
+// assigment ke single page/multiple page
+model WorkflowAssignment {
+  id             String  @id @default(uuid())
+  workflowId     String
+  singlePageId   String?
+  multiplePageId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  workflow     Workflow      @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  singlePage   SinglePage?   @relation(fields: [singlePageId], references: [id], onDelete: Cascade)
+  multiplePage MultiplePage? @relation(fields: [multiplePageId], references: [id], onDelete: Cascade)
+
+  @@unique([workflowId, singlePageId])
+  @@unique([workflowId, multiplePageId])
+  @@index([workflowId])
+  @@index([singlePageId])
+  @@index([multiplePageId])
+  @@map("workflow_assignment")
+}
+
+model ContentWorkflowStage {
+  id              String      @id @default(uuid())
+  workflowStageId String
+  contentType     ContentType // "SINGLE_PAGE" atau "MULTIPLE_PAGE"
+  contentId       String // ID dari SinglePageContent atau MultiplePageEntry
+
+  approvedBy Int? // User ID yang diapprove
+  approvedAt DateTime?
+  notes      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relasi
+  workflowStage WorkflowStage @relation(fields: [workflowStageId], references: [id], onDelete: Cascade)
+  approver      User?         @relation(fields: [approvedBy], references: [id], onDelete: SetNull)
+
+  @@unique([contentType, contentId])
+  @@index([workflowStageId])
+  @@index([contentType, contentId])
+  @@map("content_workflow_stage")
+}
+
+model MediaFolder {
+  id             String    @id @default(uuid())
+  organizationId String
+  parentId       String?
+  name           String?
+  description    String?
+  color          String? // Hex color untuk UI
+  createdById    Int
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+
+  // relasi
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  parent       MediaFolder?  @relation("FolderHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  subfolders   MediaFolder[] @relation("FolderHierarchy")
+  createdBy    User          @relation("MediaFolderCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  assets       MediaAsset[]
+
+  @@index([organizationId])
+  @@index([parentId])
+  @@index([createdById])
+  @@map("media_folders")
+}
+
+model MediaAsset {
+  id             String  @id @default(uuid())
+  organizationId String
+  folderId       String?
+  uploadedById   Int
+  title          String
+  description    String?
+  altText        String? // untuk akses
+  fileName       String
+  fileUrl        String
+  fileSize       Int
+  mimeType       String
+  extension      String
+
+  // Image/Video specific
+  width    Int?
+  height   Int?
+  duration Float? // untuk video/audio dalam detik
+
+  // Metadata
+  tags     String[] @default([])
+  language String   @default("en")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  folder       MediaFolder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  uploadedBy   User         @relation("MediaAssetUploader", fields: [uploadedById], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([folderId])
+  @@index([uploadedById])
+  @@index([tags])
+  @@map("media_assets")
+}
+
+enum Role {
+  OWNER
+  COLLABORATOR
+}
+
+enum ProjectRole {
+  OWNER
+  ADMIN
+  MANAGER
+  EDITOR
+  REVIEWER
+  AUTHOR
+  CONTRIBUTOR
+  VIEWER
+}
+
+enum Status {
+  PENDING
+  ACTIVE
+  INACTIVE
+}
+
+enum ProjectStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  TRIAL
+  PENDING
+}
+
+enum PaymentStatus {
+  PAID
+  PENDING
+  FAILED
+  REFUNDED
+}
+
+enum PaymentType {
+  CREDIT_CARD
+  EWALLET
+  VIRTUAL_ACCOUNT
+  RETAIL
+  PAYLATER
+  QRIS
+}
+
+enum FieldType {
+  TEXT // teks pendek
+  RICH_TEXT // teks panjang dengan format
+  NUMBER
+  DATE_TIME
+  MEDIA // gambar, video, dokumen
+  LOCATION // data geografis
+  RELATION // tautan ke entri lain
+  MULTIPLE_CONTENT
+  BOOLEAN
+  SELECT
+  JSON
+}
+
+enum AccessScope {
+  CUSTOM
+  FULL_ACCESS
+  READ_ONLY
+}
+
+enum TokenStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum ContentType {
+  SINGLE_PAGE
+  MULTIPLE_PAGE
+}
+
+model Item {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("item")
+}
