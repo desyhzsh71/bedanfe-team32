@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const https = require('http');
 
 // config
-const MIDTRANS_SERVER_KEY = 'Mid-server-A6PwGPAHedOlWdtzVABowiSp';
+const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY ||'Mid-server-A6PwGPAHedOlWdtzVABowiSp';
 const order_id = '367bbc00-928e-43a2-a9a6-2423a3d03661'; 
 const status_code = '200';
 const gross_amount = '100000.00';
